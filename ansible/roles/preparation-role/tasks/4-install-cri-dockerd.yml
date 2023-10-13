@@ -1,0 +1,20 @@
+---
+- name: Download and unarchive cri-dockerd
+  unarchive:
+    src: "{{ cri_dockerd_link }}"
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy cri-dockerd binary to /usr/local/bin
+  copy:
+    src: /tmp/cri-dockerd/cri-dockerd
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Download service and socket for cri-dockerd
+  get_url: 
+    url: "{{ item }}"
+    dest: /etc/systemd/system
+  loop:
+    - "{{ cri_dockerd_service }}"
+    - "{{ cri_dockerd_socket }}"

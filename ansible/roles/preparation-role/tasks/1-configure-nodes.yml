@@ -1,0 +1,57 @@
+---
+- name: Configure DNS
+  lineinfile:
+    path: /etc/resolv.conf
+    line: "nameserver {{ nameserver }}"
+
+- name: Configure /etc/hosts
+  lineinfile: 
+    path: /etc/hosts
+    line: "{{ hostvars[item].internal_ip }} {{ hostvars[item].inventory_hostname }}"
+  loop: "{{ groups['cluster'] }}"
+
+- name: Install common packages
+  yum:
+    name:
+      - curl
+      - wget
+      - gnupg
+      - iptables
+
+- name: Install master packages
+  yum:
+    name:
+      - keepalived
+      - haproxy
+  when: "'master' in group_names"
+
+- name: Add overlay and br_netfilter module
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - overlay
+    - br_netfilter
+
+- name: Set kernel parameters values
+  sysctl:
+    name: "{{ item }}"
+    value: '1'
+    state: present
+  loop:
+    - net.ipv4.ip_forward
+    - net.bridge.bridge-nf-call-iptables
+
+- name: Disable system swap
+  shell: "swapoff -a"
+
+- name: Remove current swaps from fstab
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '(?i)^([^#][\S]+\s+(none|swap)\s+swap.*)'
+    line: '# \1'
+    backrefs: yes
+    state: present
+
+- name: Reboot VM
+  reboot:

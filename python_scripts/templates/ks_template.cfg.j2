@@ -1,0 +1,96 @@
+#version=Centos7
+# System authorization information
+auth --enableshadow --passalgo=sha512
+
+# Reboot after installation
+reboot --eject
+
+# Install OS instead of upgrade
+install
+
+# License agreement
+eula --agreed
+# Use CDROM installation media
+cdrom
+# Use graphical install
+text
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use=vda
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+{% for net_info in net_info_list %}
+network  --bootproto=static --device=eth{{ loop.index0 }} --gateway={{ net_info.gateway }} --ip={{ net_info.node_ip }} --nameserver=8.8.8.8 --netmask={{ net_info.netmask }} --ipv6=auto --activate
+{% endfor %}
+# network  --hostname=localhost.localdomain
+network  --hostname={{ host_name }}
+
+# Root password
+rootpw --iscrypted {{ rootpw }}
+
+# Add user
+user --name={{ admin_name }} --groups=wheel --iscrypted --password={{ adminpw }}
+
+# Add ssh user key
+sshkey --username={{ admin_name }} "{{ ssh_key }}"
+# System services
+services --disabled="chronyd"
+# System timezone
+timezone Asia/Almaty --isUtc --nontp
+
+# System bootloader configuration
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=vda
+autopart --type=lvm
+# Partition clearing information
+clearpart --none --initlabel
+
+%packages
+@^minimal
+@core
+kexec-tools
+# remove from Core:
+-aic94xx-firmware
+-alsa-firmware
+-bfa-firmware
+-ivtv-firmware
+-iwl1000-firmware
+-iwl100-firmware
+-iwl105-firmware
+-iwl135-firmware
+-iwl2000-firmware
+-iwl2030-firmware
+-iwl3160-firmware
+-iwl3945-firmware
+-iwl4965-firmware
+-iwl5000-firmware
+-iwl5150-firmware
+-iwl6000-firmware
+-iwl6000g2a-firmware
+-iwl6000g2b-firmware
+-iwl6050-firmware
+-iwl7260-firmware
+-libertas-sd8686-firmware
+-libertas-sd8787-firmware
+-libertas-usb8388-firmware
+-ql2100-firmware
+-ql2200-firmware
+-ql23xx-firmware
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb='auto'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
+%post
+echo "{{ admin_name }} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/{{ admin_name }}
+%end

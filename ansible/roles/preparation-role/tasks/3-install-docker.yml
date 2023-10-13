@@ -1,0 +1,21 @@
+---
+- name: Set up docker repository
+  yum_repository:
+    name: docker-ce
+    description: Adding docker repo
+    baseurl: "{{ docker_repo }}"
+    gpgcheck: yes
+    gpgkey: "{{ docker_gpgkey }}"
+
+- name: Install docker
+  yum:
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+- name: Start docker
+  systemd:
+    name: docker
+    state: started
+    enabled: yes

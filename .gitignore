@@ -1,0 +1,14 @@
+.vscode/
+__pycache__/
+venv/
+
+# CREDS
+.secrets/
+
+# LOGS
+*.log
+
+# GENERATED DIRS
+host_vars/
+group_vars/cluster/
+data/

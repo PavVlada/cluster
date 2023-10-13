@@ -1,0 +1,17 @@
+---
+# docker
+docker_repo: https://download.docker.com/linux/centos/7/$basearch/stable
+docker_gpgkey: https://download.docker.com/linux/centos/gpg
+
+# kubernetes
+kuber_repo: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+kuber_gpgkey:
+  - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+  - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+# cri-dockerd 
+cri_dockerd_ver: 0.3.5
+cri_dockerd_file: "cri-dockerd-{{ cri_dockerd_ver }}.amd64.tgz"
+cri_dockerd_link: "https://github.com/Mirantis/cri-dockerd/releases/download/v{{ cri_dockerd_ver }}/{{ cri_dockerd_file }}"
+cri_dockerd_service: https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
+cri_dockerd_socket: https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket

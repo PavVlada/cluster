@@ -1,0 +1,14 @@
+---
+all:
+  children:
+    cluster:
+      hosts:
+        node[1:5].internal:
+    master:
+      hosts:
+        node[1:3].internal:
+    worker:
+      hosts:
+        node[4:5].internal:
+
+      

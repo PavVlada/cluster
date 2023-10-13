@@ -1,0 +1,29 @@
+---
+nodes:
+  name: vm
+  count_master: 3
+  count_worker: 2
+
+  conf:
+    admin_name: admin
+    timezone: Asia/Almaty
+    ftp_ip: 192.168.0.11
+    
+    disk_size: 5
+    graphics: none
+    os_variant: rhel7.0
+    ram: 2048
+    vcpus: 2
+
+networks:
+  - name: default
+    network_ip: 192.168.122.0
+    netmask: 255.255.255.0
+    gateway: 192.168.122.1
+    bridge: virbr0
+
+  - name: intnet
+    network_ip: 10.3.0.0
+    netmask: 255.255.0.0
+    gateway: 10.3.0.1
+    bridge: virbr1

@@ -1,0 +1,5 @@
+---
+# - include_tasks: 1-configure-nodes.yml
+- include_tasks: 2-install-kubernetes.yml
+- include_tasks: 3-install-docker.yml
+- include_tasks: 4-install-cri-dockerd.yml

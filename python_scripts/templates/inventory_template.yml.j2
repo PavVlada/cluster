@@ -1,0 +1,11 @@
+---
+all:
+  children:
+    cluster:
+      children:
+        master:
+          hosts:
+            {{ master_host }}
+        worker:
+          hosts:
+            {{ worker_host }}
