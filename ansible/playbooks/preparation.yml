@@ -3,6 +3,7 @@
   hosts: cluster
   gather_facts: no
   become: yes
+  serial: 1
 
   roles:
     - name: preparation-role

@@ -18,7 +18,7 @@ for output in "${output_list[@]}"; do
         vm_name=$(echo "$output" | grep -o -- '--name [^ ]*' | awk '{print $2}')
         if ! sudo virsh list --all | grep -q "$vm_name"; then
             echo "Создаю ${vm_name}"
-            eval "${output}"
+            sudo bash -c "eval '${output}'"
         fi
         # start_vm $vm_name
     else

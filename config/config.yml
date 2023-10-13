@@ -24,6 +24,6 @@ networks:
 
   - name: intnet
     network_ip: 10.3.0.0
-    netmask: 255.255.0.0
+    netmask: 255.255.255.0
     gateway: 10.3.0.1
     bridge: virbr1

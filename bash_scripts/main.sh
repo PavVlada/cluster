@@ -13,7 +13,7 @@ log() {
     echo "$(date): $1" >> "$log_file"
 }
 
-log "Starting installation process..."
+# log "Starting installation process..."
 
 ./install_virt.sh
 ./create_venv.sh
@@ -21,11 +21,10 @@ log "Starting installation process..."
 ./create_dirs.sh
 ./create_ssh_key.sh
 ./download_iso.sh
-
 source ../venv/bin/activate
 ./create_secret.sh
-# ./create_cluster.sh
+./create_cluster.sh
 ./run_ansible.sh
 deactivate
 
-log "Installation completed successfully."
+# log "Installation completed successfully."

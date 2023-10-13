@@ -6,13 +6,13 @@ create_dir() {
 }
 
 create_list_dir() {
-    local dir_list=$1
+    local dir_list=("$@")
     for dir in "${dir_list[@]}"; do
-        create_dir dir
+        create_dir "$dir"
     done
 }
 
 conf_dirs=("$ANSIBLE_DIR" "$ISO_DIR" "$SECRET_DIR" "$SSH_DIR" "$DATA_DIR")
-create_list_dir conf_dirs
+create_list_dir "${conf_dirs[@]}"
 
 create_dir "$ANSIBLE_DIR/inventories/$ENVIRONMENT/host_vars"
