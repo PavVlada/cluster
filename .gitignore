@@ -8,7 +8,7 @@ venv/
 # LOGS
 *.log
 
-# GENERATED DIRS
+# GENERATED DIRS AND FILES
 host_vars/
-group_vars/cluster/
+inventories/
 data/
